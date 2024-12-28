@@ -227,14 +227,26 @@ void MainWindow::OpenFileExplorer(){
         QTextStream out{stdout};
         QTextStream in(&file);
         //handle End of file
+        w = new MainWindow;
+        w->setWindowIcon(QIcon("C:/Users/benja/Desktop/NotePad/Assets/favicon (1).ico"));
+        w->setWindowTitle(" ");
+
         try{
             while(!in.atEnd()){
                 QString line = in.readLine();
-                text->appendPlainText(line);
+                //CreateNewWindow();
+                w->text->appendPlainText(line);
+                //text->appendPlainText(line);
                 //out<<line;
+                //have a way to store the current file opened
             }
         }catch(std::exception &e){
             std::cout<<e.what()<<std::endl;
         }
+        w->show();
     }
+}
+
+void MainWindow::SaveFile(){
+
 }

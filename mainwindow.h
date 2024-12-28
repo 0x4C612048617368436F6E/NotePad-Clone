@@ -23,6 +23,7 @@ public:
 private slots:
     void CreateNewWindow();
     void OpenFileExplorer();
+    void SaveFile();
 private:
     Ui::MainWindow* ui;
     QPlainTextEdit* text;
