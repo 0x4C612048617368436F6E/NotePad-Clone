@@ -3,7 +3,9 @@
 
 #include <QMainWindow>
 #include <QPlainTextEdit>
-
+#include <QFileDialog>
+#include <QMessageBox>
+#include<iostream>
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -18,9 +20,13 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void CreateNewWindow();
+    void OpenFileExplorer();
 private:
     Ui::MainWindow* ui;
     QPlainTextEdit* text;
+    MainWindow *w;
     void MainMenuBar();
 
     //Menus
@@ -58,7 +64,6 @@ private:
     QAction* Time_Date = nullptr;
     QAction* Font = nullptr;
 
-
     //Actions For View
     QMenu* SubViewZoom = nullptr;
     QAction* StatusBar = nullptr;
@@ -68,8 +73,7 @@ private:
     QAction* ZoomOut = nullptr;
     QAction* RestoreDefaultZoom = nullptr;
 
-
     //Actions For Help
-    QAction* About;
+    QAction* About =  nullptr;
 };
 #endif // MAINWINDOW_H

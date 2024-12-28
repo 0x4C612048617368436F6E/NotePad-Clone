@@ -7,7 +7,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    w.setWindowTitle("NotePad");
+    w.setWindowIcon(QIcon("C:/Users/benja/Desktop/NotePad/Assets/favicon (1).ico"));
+    w.setWindowTitle(" ");
     w.show();
     return a.exec();
 }

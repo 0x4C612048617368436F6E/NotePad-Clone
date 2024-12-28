@@ -15,6 +15,43 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete text;
+    delete w;
+    delete File;
+    delete Edit;
+    delete View;
+    delete Help;
+    delete NewTab;
+    delete NewWindow;
+    delete Open;
+    delete Save;
+    delete SaveAs;
+    delete SaveAll;
+    delete PageSetup;
+    delete Print;
+    delete CloseTab;
+    delete CloseWindow;
+    delete Exit;
+    delete Undo;
+    delete Cut;
+    delete Copy;
+    delete Paste;
+    delete Delete;
+    delete DefineWithBing;
+    delete Find;
+    delete FindNext;
+    delete FindPrevious;
+    delete Replace;
+    delete GoTo;
+    delete SelectAll;
+    delete Time_Date;
+    delete Font;
+    delete SubViewZoom;
+    delete StatusBar;
+    delete WordWrap;
+    delete ZoomIn;
+    delete ZoomOut;
+    delete RestoreDefaultZoom;
+    delete About;
 }
 
 void MainWindow::MainMenuBar(){
@@ -25,38 +62,41 @@ void MainWindow::MainMenuBar(){
     Help = menuBar()->addMenu("Help");
 
     //Actions For File
-    NewTab = new QAction();
+    NewTab = new QAction(this);
     NewTab->setText("New Tab\tCtrl+N");
 
-    NewWindow = new QAction();
+    NewWindow = new QAction(this);
     NewWindow->setText("New Window\tCtrl+Shift+N");
+    connect(NewWindow,SIGNAL (triggered()), this, SLOT (CreateNewWindow()));
 
     Open = new QAction();
     Open->setText("Open\tCtrl+O");
+    connect(Open,SIGNAL (triggered()), this, SLOT (OpenFileExplorer()));
 
-    Save = new QAction();
+    Save = new QAction(this);
     Save->setText("Save\tCtrl+S");
 
-    SaveAs = new QAction();
+    SaveAs = new QAction(this);
     SaveAs->setText("Save As\tCtrl+Shift+S");
 
-    SaveAll = new QAction();
+    SaveAll = new QAction(this);
     SaveAll->setText("Save All\tCtrl+Alt+S");
 
-    PageSetup = new QAction();
+    PageSetup = new QAction(this);
     PageSetup->setText("Page Setup");
 
-    Print = new QAction();
+    Print = new QAction(this);
     Print->setText("Print\tCtrl+P");
 
-    CloseTab = new QAction();
+    CloseTab = new QAction(this);
     CloseTab->setText("Close Tab\nCtrl+W");
 
-    CloseWindow = new QAction();
+    CloseWindow = new QAction(this);
     CloseWindow->setText("Close Window\tCtrl+Shift+W");
 
-    Exit = new QAction();
+    Exit = new QAction(this);
     Exit->setText("Exit");
+    connect(Exit,SIGNAL (triggered()),qApp,SLOT (quit()));
 
     //Actions For Edit
     Undo = new QAction(this);
@@ -113,6 +153,7 @@ void MainWindow::MainMenuBar(){
     File->addAction(Print);
     File->addAction(CloseTab);
     File->addAction(CloseWindow);
+    File->addAction(Exit);
 
     //add action for Edit
     Edit->addAction(Undo);
@@ -159,4 +200,41 @@ void MainWindow::MainMenuBar(){
 
     //add action to menu
     Help->addAction(About);
+}
+
+void MainWindow::CreateNewWindow(){
+    w = new MainWindow;
+    w->setWindowIcon(QIcon("C:/Users/benja/Desktop/NotePad/Assets/favicon (1).ico"));
+    w->setWindowTitle(" ");
+    w->show();
+}
+
+void MainWindow::OpenFileExplorer(){
+    //Just Open the File explorer
+    QString FileName = QFileDialog::getOpenFileName(
+        this,"Open",QDir::homePath(),"(*)"
+        );
+    //check if file is empty
+    if(!FileName.isEmpty()){
+        //is empty
+        QMessageBox::information(nullptr, "Selected File", "You selected: " + FileName);
+        //Since this is a file, lets read it
+        QFile file(FileName);
+        if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+            QMessageBox::information(nullptr,"File","Unable to Read File");
+        }
+
+        QTextStream out{stdout};
+        QTextStream in(&file);
+        //handle End of file
+        try{
+            while(!in.atEnd()){
+                QString line = in.readLine();
+                text->appendPlainText(line);
+                //out<<line;
+            }
+        }catch(std::exception &e){
+            std::cout<<e.what()<<std::endl;
+        }
+    }
 }
